@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+   <head>
+     <meta charset="UTF-8">
+     <title>Ajouter une tache</title>
+     <link rel="stylesheet" href="AJ.css">
+   </head>
+   <body>
+   <form action="db.php" method="POST id="formTache">
+     <table border="1">
+        <tr>
+         <th colspan="6">NOUVELLE TACHE</th>
+        </tr>
+        <tr>
+            <th>TITRE</th>
+            <th>DESCRIPTION</th>
+            <th>GRANDEUR DE PRIORITE</th>
+            <th>DATE</th>
+            <th>DUREE(en jour)</th>
+            <th>ETAT</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="titre" placeholder="Nouveau titre">   
+            </td>
+            <td>
+                <textarea size="400" id="des" rows="2" cols="30" placeholder="Description détaillé de la tache"></textarea>
+            </td>
+            <td>
+                <select id="priorite">
+                    <option>Veuillez choisir une Grandeur de priorité pour cette tache</option>
+                    <option>Faible importance</option>
+                    <option>priorité moyenne</option>
+                    <option>Primordiale</option>
+                    <option>Capitale</option>
+                </select>
+            </td>
+            <td>
+                <input type="date" id="date">
+            </td>
+            <td>
+                <input type="text" id="jour" placeholder="Entrer la durée en jour de la tache">
+            </td>
+            <td>
+                <select id="etat">
+                    <option>COMMENCE</option>
+                    <option>EN COURS</option>
+                    <option>TERMINER</option>
+                </select>
+             </td>
+         </tr>
+        </table>
+      <br>
+       <div style="text-align: center;">
+         <button type="button" onclick="validerNouvelleTache(event)">VALIDER</button>
+         <a href="Slowrush.html"><button type="button">ANNULER</button></a>
+         <button type="reset">REINITIALISER</button>
+        </div>
+     </form>     
+     <script src="aj.js"></script>
+   </body>
+</html>

@@ -1,0 +1,112 @@
+/* Styles Généraux */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #F9F7F2; 
+    color: #3A4146;
+    padding: 30px;
+    margin: 0;
+}
+
+h1 {
+    color: #1A1D20; 
+    margin-bottom: 5px;
+}
+
+h3 {
+    color: #707A81; 
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #2D3337; 
+    margin-top: 40px;
+    border-bottom: 2px solid #E4E1D8; 
+    padding-bottom: 8px;
+}
+
+/* Boutons */
+button {
+    background-color: #2B6CB0; 
+    color: #F9F7F2; 
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.1s ease;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #1A1D20; 
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+
+button[onclick="sauvegarderDonnees()"] {
+    background-color: #1A1D20; 
+}
+button[onclick="sauvegarderDonnees()"]:hover {
+    background-color: #2B6CB0; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #FFFFFF; 
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    margin-bottom: 20px;
+    border: none;
+}
+
+th {
+    background-color: #2D3337; 
+    color: #F9F7F2; 
+    text-align: left;
+    padding: 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #E4E1D8; 
+    color: #3A4146; 
+    font-size: 15px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+td button {
+    padding: 6px 12px;
+    font-size: 12px;
+    background-color: #3A4146; 
+}
+td button:hover {
+    background-color: #2B6CB0; 
+}
+td button:last-child {
+    background-color: #A0AEC0;
+}
+td button:last-child:hover {
+    background-color: #E53E3E; 
+}
+#ganttContainer {
+    margin-top: 20px;
+    border: 2px dashed #CDCAA0 !important;
+    padding: 30px;
+    text-align: center;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+}

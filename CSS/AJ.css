@@ -1,0 +1,55 @@
+
+body {
+    background-color: #1A1E26; 
+    color: #F2FEFE;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1A1E26;
+    border: 2px solid #C5A059; 
+}
+
+th {
+    background-color: #C5A059; 
+    color: #1A1E26; 
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+td {
+    border: 1px solid #C5A059;
+    padding: 8px;
+}
+
+input[type="text"], input[type="date"], textarea, select {
+    width: 95%;
+    padding: 8px;
+    background-color: #1A1E26;
+    color: #F2FEFE;
+    border: 1px solid #C5A059;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #C5A059;
+    color: #1A1E26;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #F2FEFE;
+    color: #1A1E26;
+    border: 1px solid #C5A059;
+}
