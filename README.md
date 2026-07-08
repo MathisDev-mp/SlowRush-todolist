@@ -47,28 +47,30 @@ Une page dédiée (ajout.html) permet de créer une nouvelle tâche en renseigna
 | Gestion des erreurs | Messages clairs et codes HTTP appropriés. |
 
 🧱 **Structure du projet**
+
 SlowRush/
 ├── CSS/
-│   ├── slow.css          # Styles pour la page principale
-│   └── AJ.css            # Styles pour la page d'ajout
+│   ├── slow.css           # Styles pour la page principale
+│   └── AJ.css             # Styles pour la page d'ajout
 ├── DATA/
-│   └── DB.sql            # Script SQL pour la base de données
+│   └── DB.sql             # Script SQL pour la base de données
 ├── HTML/
-│   ├── Slowrush.html     # Page principale (liste des tâches)
-│   └── ajout.html        # Formulaire d'ajout de tâche
+│   ├── Slowrush.html      # Page principale (liste des tâches)
+│   └── ajout.html         # Formulaire d'ajout de tâche
 ├── JS/
-│   ├── slow.js           # Logique pour la page principale
-│   └── aj.js             # Logique pour l'ajout de tâche
+│   ├── slow.js            # Logique pour la page principale
+│   └── aj.js              # Logique pour l'ajout de tâche
 ├── PHP/
-│   ├── back.php          # Configuration de la connexion MySQL
-│   ├── db.php            # Ajout d'une tâche en base de données
-│   ├── aJ.php            # Récupération de toutes les tâches
-│   ├── delete_task.php   # Suppression d'une tâche
-│   ├── update_task.php   # Mise à jour d'une tâche
-│   ├── get_task.php      # Récupération d'une tâche spécifique
-│   └── toggle_task.php   # Basculer le statut "terminée"
+│   ├── back.php           # Configuration de la connexion MySQL
+│   ├── db.php             # Ajout d'une tâche en base de données
+│   ├── aJ.php             # Récupération de toutes les tâches
+│   ├── delete_task.php    # Suppression d'une tâche
+│   ├── update_task.php    # Mise à jour d'une tâche
+│   ├── get_task.php       # Récupération d'une tâche spécifique
+│   └── toggle_task.php    # Basculer le statut "terminée"
 ├── README.md
 └── LICENSE
+
 
 💻 **Technologies utilisées**
 | Technologie | Version | Utilisation |
