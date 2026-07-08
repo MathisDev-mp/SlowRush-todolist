@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+<html>
    <head>
      <meta charset="UTF-8">
      <title>Ajouter une tache</title>
-     <link rel="stylesheet" href="..\CSS\AJ.css">
+     <link rel="stylesheet" href="../CSS/AJ.css">
    </head>
    <body>
-   <form action="db.php" method="POST id="formTache">
+   <form action="db.php" method="POST" id="formTache">
      <table border="1">
         <tr>
          <th colspan="6">NOUVELLE TACHE</th>
@@ -20,13 +21,13 @@
         </tr>
         <tr>
             <td>
-                <input type="text" id="titre" placeholder="Nouveau titre">   
+                <input type="text" id="titre" name="titre" placeholder="Nouveau titre">
             </td>
             <td>
-                <textarea size="400" id="des" rows="2" cols="30" placeholder="Description détaillé de la tache"></textarea>
+                <textarea size="400" id="des" name="des" rows="2" cols="30" placeholder="Description détaillé de la tache"></textarea>
             </td>
             <td>
-                <select id="priorite">
+                <select id="priorite" name="priorite">
                     <option>Veuillez choisir une Grandeur de priorité pour cette tache</option>
                     <option>Faible importance</option>
                     <option>priorité moyenne</option>
@@ -35,13 +36,13 @@
                 </select>
             </td>
             <td>
-                <input type="date" id="date">
+                <input type="date" id="date" name="date">
             </td>
             <td>
-                <input type="text" id="jour" placeholder="Entrer la durée en jour de la tache">
+                <input type="text" id="jour" name="jour" placeholder="Entrer la durée en jour de la tache">
             </td>
             <td>
-                <select id="etat">
+                <select id="etat" name="etat">
                     <option>COMMENCE</option>
                     <option>EN COURS</option>
                     <option>TERMINER</option>
@@ -55,7 +56,7 @@
          <a href="Slowrush.html"><button type="button">ANNULER</button></a>
          <button type="reset">REINITIALISER</button>
         </div>
-     </form>     
-     <script src="..\JS\aj.js"></script>
+     </form>
+     <script src="../JS/aj.js"></script>
    </body>
 </html>

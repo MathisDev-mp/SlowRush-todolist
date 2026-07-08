@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+<html>
     <head>
         <meta charset="UTF-8">
         <title>SlowRush</title>
-        <link rel="stylesheet" href="..\CSS\slow.css">
+        <link rel="stylesheet" href="../CSS/slow.css">
     </head>
     <body>
         <h1>SlowRush</h1>
@@ -13,18 +14,15 @@
                     <a href="ajout.html">
                         <button>AJOUTER UNE TACHE</button>
                     </a>
-
                 </td>
                 <td>
                    <button onclick="document.getElementById('importGantt').click()">IMPORTER MON GANTT</button>
-    
                    <input type="file" id="importGantt" accept="image/*, .html, .gan" style="display: none;">
-              </td>
+                </td>
             </tr>
         </table>
         <h2>Mes tâches</h2>
         <table border="1" id="listeTaches">
-
            <thead>
              <tr>
                <th>TITRE</th>
@@ -36,21 +34,17 @@
                <th>ACTIONS</th>
              </tr>
            </thead>
-
             <tbody id="tache">
-
-        
-
             </tbody>
-     </table>
-     <h2>Suivi de l'avancement - Mon Gantt</h2>
-       <div id="ganttContainer" style="margin-top: 20px; border: 2px dashed #ccc; padding: 20px; text-align: center; min-height: 150px; background-color: #fbfbfb; border-radius: 8px;">
+        </table>
+        <h2>Suivi de l'avancement - Mon Gantt</h2>
+        <div id="ganttContainer" style="margin-top: 20px; border: 2px dashed #ccc; padding: 20px; text-align: center; min-height: 150px; background-color: #fbfbfb; border-radius: 8px;">
             <p id="placeholderText" style="color: #888;">Aucun diagramme chargé. Cliquez sur "IMPORTER MON GANTT" pour visualiser votre suivi.</p>
         </div>
         <br>
        <button onclick="trid()">TRIER PAR DATE</button>
        <button onclick="trit()">TRIER PAR TITRE</button>
        <button onclick="sauvegarderDonnees()">SAUVEGARDER</button>
-       <script src="..\JS\slow.js"></script>
+       <script src="../JS/slow.js"></script>
     </body>
 </html>
