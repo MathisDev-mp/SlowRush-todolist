@@ -207,7 +207,6 @@ Voici les fonctionnalités avancées prévues pour les prochaines versions de Sl
 | 🔍 Recherche | Barre de recherche pour filtrer les tâches par mot-clé. | ⭐⭐ | Facile | JavaScript |
 
 👤 **Auteur**
-📧 Email : mathis.mpouamze@example.com
 🌐 GitHub : @MathisDev-mp
 💼 Portfolio : mathisdev-mp.github.io
 
