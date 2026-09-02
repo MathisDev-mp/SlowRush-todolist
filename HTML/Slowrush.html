@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SlowRush</title>
         <link rel="stylesheet" href="../CSS/slow.css">
     </head>
     <body>
         <h1>SlowRush</h1>
         <h3>Productivité Tranquille</h3>
+
         <table>
             <tr>
                 <td>
                     <a href="ajout.html">
-                        <button>AJOUTER UNE TACHE</button>
+                        <button type="button">AJOUTER UNE TACHE</button>
                     </a>
                 </td>
                 <td>
-                   <button onclick="document.getElementById('importGantt').click()">IMPORTER MON GANTT</button>
+                   <button type="button" onclick="document.getElementById('importGantt').click()">IMPORTER MON GANTT</button>
                    <input type="file" id="importGantt" accept="image/*, .html, .gan" style="display: none;">
                 </td>
             </tr>
         </table>
+
         <h2>Mes tâches</h2>
         <table border="1" id="listeTaches">
            <thead>
@@ -37,14 +40,17 @@
             <tbody id="tache">
             </tbody>
         </table>
+
         <h2>Suivi de l'avancement - Mon Gantt</h2>
         <div id="ganttContainer" style="margin-top: 20px; border: 2px dashed #ccc; padding: 20px; text-align: center; min-height: 150px; background-color: #fbfbfb; border-radius: 8px;">
             <p id="placeholderText" style="color: #888;">Aucun diagramme chargé. Cliquez sur "IMPORTER MON GANTT" pour visualiser votre suivi.</p>
         </div>
         <br>
-       <button onclick="trid()">TRIER PAR DATE</button>
-       <button onclick="trit()">TRIER PAR TITRE</button>
-       <button onclick="sauvegarderDonnees()">SAUVEGARDER</button>
+
+       <button type="button" onclick="trid()">TRIER PAR DATE</button>
+       <button type="button" onclick="trit()">TRIER PAR TITRE</button>
+       <button type="button" onclick="sauvegarderDonnees()">SAUVEGARDER</button>
+
        <script src="../JS/slow.js"></script>
     </body>
 </html>

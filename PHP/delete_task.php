@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-if (!isset($_POST['id'])) {
+if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
     http_response_code(400);
-    echo json_encode(["success" => false, "erreur" => "ID manquant"]);
+    echo json_encode(["success" => false, "erreur" => "ID manquant ou invalide"]);
     exit;
 }
 
-$id = $_POST['id'];
+$id = (int)$_POST['id'];
 
 try {
     // Vérifier que la tâche existe
@@ -40,4 +40,3 @@ try {
     http_response_code(500);
     echo json_encode(["success" => false, "erreur" => "Erreur lors de la suppression : " . $e->getMessage()]);
 }
-?>

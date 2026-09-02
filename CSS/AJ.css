@@ -1,6 +1,5 @@
-
 body {
-    background-color: #1A1E26; 
+    background-color: #1A1E26;
     color: #F2FEFE;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -11,12 +10,12 @@ table {
     width: 100%;
     border-collapse: collapse;
     background-color: #1A1E26;
-    border: 2px solid #C5A059; 
+    border: 2px solid #C5A059;
 }
 
 th {
-    background-color: #C5A059; 
-    color: #1A1E26; 
+    background-color: #C5A059;
+    color: #1A1E26;
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -27,13 +26,18 @@ td {
     padding: 8px;
 }
 
-input[type="text"], input[type="date"], textarea, select {
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
     width: 95%;
     padding: 8px;
     background-color: #1A1E26;
     color: #F2FEFE;
     border: 1px solid #C5A059;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
 button {

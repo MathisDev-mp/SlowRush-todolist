@@ -1,3 +1,12 @@
+// --- Utilitaire anti-XSS ---
+// Les données viennent de la base et sont injectées via innerHTML : on les échappe
+// pour éviter qu'un titre/description contenant du HTML/JS ne soit exécuté.
+function echapperHtml(valeur) {
+    const div = document.createElement('div');
+    div.textContent = valeur ?? '';
+    return div.innerHTML;
+}
+
 // --- Fonctions de base pour la gestion des tâches ---
 async function getTaches() {
     try {
@@ -14,40 +23,51 @@ async function setTaches(liste) {
     console.warn("setTaches() n'est plus utilisé. Les tâches sont gérées via PHP/MySQL.");
 }
 
-// --- 1. Affichage des tâches ---
+// --- Construction d'une ligne de tableau pour une tâche ---
+function construireLigneTache(tache) {
+    const estTerminee = tache.terminee || tache.etat === "TERMINER";
+    const ligne = document.createElement('tr');
+    ligne.innerHTML = `
+        <td>${echapperHtml(tache.titre)}</td>
+        <td>${echapperHtml(tache.description)}</td>
+        <td>${echapperHtml(tache.priorite)}</td>
+        <td>${echapperHtml(tache.date)}</td>
+        <td>${echapperHtml(tache.duree)}</td>
+        <td>${echapperHtml(tache.etat)}</td>
+        <td>
+            <button onclick="toggleTerminee(${tache.id}, ${estTerminee ? 1 : 0})" style="background:${estTerminee ? '#4CAF50' : '#f44336'}; color:white;">
+                ${estTerminee ? "✅ Terminée" : "❌ Non terminée"}
+            </button>
+            <button onclick="modifierTache(${tache.id})">Modifier</button>
+            <button onclick="supprimerTache(${tache.id})">Supprimer</button>
+        </td>
+    `;
+    return ligne;
+}
+
+// --- Affichage d'une liste de tâches dans le tableau ---
+function afficherTachesAvecListe(listeTaches) {
+    const corpsTableau = document.getElementById('tache');
+    corpsTableau.innerHTML = "";
+
+    if (listeTaches.length === 0) {
+        corpsTableau.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Aucune tâche.</td></tr>";
+        return;
+    }
+
+    for (const tache of listeTaches) {
+        corpsTableau.appendChild(construireLigneTache(tache));
+    }
+}
+
+// --- 1. Affichage des tâches (chargement depuis le serveur) ---
 async function afficherTaches() {
-    let corpsTableau = document.getElementById('tache');
+    const corpsTableau = document.getElementById('tache');
     corpsTableau.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Chargement...</td></tr>";
 
     try {
         const listeTaches = await getTaches();
-
-        if (listeTaches.length === 0) {
-            corpsTableau.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Aucune tâche pour le moment.</td></tr>";
-            return;
-        }
-
-        corpsTableau.innerHTML = "";
-        for (let tache of listeTaches) {
-            const estTerminee = tache.terminee || tache.etat === "TERMINER";
-            let ligne = document.createElement('tr');
-            ligne.innerHTML = `
-                <td>${tache.titre || ''}</td>
-                <td>${tache.description || ''}</td>
-                <td>${tache.priorite || ''}</td>
-                <td>${tache.date || ''}</td>
-                <td>${tache.duree || ''}</td>
-                <td>${tache.etat || ''}</td>
-                <td>
-                    <button onclick="toggleTerminee(${tache.id}, ${estTerminee ? 1 : 0})" style="background:${estTerminee ? '#4CAF50' : '#f44336'}; color:white;">
-                        ${estTerminee ? "✅ Terminée" : "❌ Non terminée"}
-                    </button>
-                    <button onclick="modifierTache(${tache.id})">Modifier</button>
-                    <button onclick="supprimerTache(${tache.id})">Supprimer</button>
-                </td>
-            `;
-            corpsTableau.appendChild(ligne);
-        }
+        afficherTachesAvecListe(listeTaches);
     } catch (error) {
         console.error("Erreur :", error);
         corpsTableau.innerHTML = "<tr><td colspan='7' style='text-align:center; color:red;'>Erreur de chargement des tâches.</td></tr>";
@@ -62,7 +82,7 @@ async function supprimerTache(idAEffacer) {
         const response = await fetch("../PHP/delete_task.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${idAEffacer}`
+            body: `id=${encodeURIComponent(idAEffacer)}`
         });
         if (!response.ok) {
             const errorData = await response.json();
@@ -79,7 +99,7 @@ async function supprimerTache(idAEffacer) {
 async function modifierTache(idAModifier) {
     try {
         // Récupérer la tâche actuelle
-        const response = await fetch(`../PHP/get_task.php?id=${idAModifier}`);
+        const response = await fetch(`../PHP/get_task.php?id=${encodeURIComponent(idAModifier)}`);
         if (!response.ok) throw new Error("Erreur de récupération");
         const tache = await response.json();
 
@@ -102,7 +122,7 @@ async function modifierTache(idAModifier) {
 
         let nouvelleDuree = prompt("Modifier la durée (en jours) :", tache.duree);
         if (nouvelleDuree === null) return;
-        if (nouvelleDuree.trim() === "") nouvelleDuree = tache.duree;
+        if (nouvelleDuree.trim() === "" || isNaN(+nouvelleDuree) || +nouvelleDuree <= 0) nouvelleDuree = tache.duree;
 
         let nouvelEtat = prompt("Modifier l'état (COMMENCE/EN COURS/TERMINER) :", tache.etat);
         if (nouvelEtat === null) return;
@@ -140,7 +160,7 @@ async function toggleTerminee(id, estTerminee) {
         const response = await fetch("../PHP/toggle_task.php", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id=${id}`
+            body: `id=${encodeURIComponent(id)}`
         });
         if (!response.ok) {
             const errorData = await response.json();
@@ -164,7 +184,7 @@ async function trid() {
             change = false;
             for (let i = 0; i < n - 1; i++) {
                 if (new Date(listeTaches[i].date) > new Date(listeTaches[i + 1].date)) {
-                    let temp = listeTaches[i];
+                    const temp = listeTaches[i];
                     listeTaches[i] = listeTaches[i + 1];
                     listeTaches[i + 1] = temp;
                     change = true;
@@ -184,7 +204,7 @@ async function trid() {
 async function trit() {
     try {
         const listeTaches = await getTaches();
-        let n = listeTaches.length;
+        const n = listeTaches.length;
 
         for (let i = 0; i < n - 1; i++) {
             let minId = i;
@@ -194,7 +214,7 @@ async function trit() {
                 }
             }
             if (minId !== i) {
-                let temp = listeTaches[i];
+                const temp = listeTaches[i];
                 listeTaches[i] = listeTaches[minId];
                 listeTaches[minId] = temp;
             }
@@ -207,44 +227,55 @@ async function trit() {
     }
 }
 
-// --- Fonction utilitaire pour afficher une liste de tâches ---
-function afficherTachesAvecListe(listeTaches) {
-    let corpsTableau = document.getElementById('tache');
-    corpsTableau.innerHTML = "";
-
-    if (listeTaches.length === 0) {
-        corpsTableau.innerHTML = "<tr><td colspan='7' style='text-align:center;'>Aucune tâche.</td></tr>";
-        return;
-    }
-
-    for (let tache of listeTaches) {
-        const estTerminee = tache.terminee || tache.etat === "TERMINER";
-        let ligne = document.createElement('tr');
-        ligne.innerHTML = `
-            <td>${tache.titre || ''}</td>
-            <td>${tache.description || ''}</td>
-            <td>${tache.priorite || ''}</td>
-            <td>${tache.date || ''}</td>
-            <td>${tache.duree || ''}</td>
-            <td>${tache.etat || ''}</td>
-            <td>
-                <button onclick="toggleTerminee(${tache.id}, ${estTerminee ? 1 : 0})" style="background:${estTerminee ? '#4CAF50' : '#f44336'}; color:white;">
-                    ${estTerminee ? "✅ Terminée" : "❌ Non terminée"}
-                </button>
-                <button onclick="modifierTache(${tache.id})">Modifier</button>
-                <button onclick="supprimerTache(${tache.id})">Supprimer</button>
-            </td>
-        `;
-        corpsTableau.appendChild(ligne);
-    }
-}
-
-// --- 7. Sauvegarde (désormais inutile avec MySQL, mais gardée pour compatibilité) ---
+// --- 7. Sauvegarde (inutile avec MySQL, gardée pour compatibilité avec le bouton existant) ---
 function sauvegarderDonnees() {
     alert("✅ Les données sont automatiquement sauvegardées dans la base de données.");
 }
 
+// --- 8. Import du Gantt (fonctionnalité manquante, ajoutée ici) ---
+function initImportGantt() {
+    const input = document.getElementById('importGantt');
+    const container = document.getElementById('ganttContainer');
+    if (!input || !container) return;
+
+    input.addEventListener('change', function () {
+        const fichier = input.files[0];
+        if (!fichier) return;
+
+        const nomFichier = fichier.name.toLowerCase();
+
+        if (fichier.type.startsWith('image/')) {
+            // Aperçu d'une image (ex. capture d'écran d'un diagramme de Gantt)
+            const lecteur = new FileReader();
+            lecteur.onload = function (e) {
+                container.innerHTML = `
+                    <p style="margin-top:0; color:#888;">${echapperHtml(fichier.name)}</p>
+                    <img src="${e.target.result}" alt="Diagramme de Gantt importé">
+                `;
+            };
+            lecteur.readAsDataURL(fichier);
+        } else if (nomFichier.endsWith('.html')) {
+            // Aperçu d'un export HTML de Gantt dans une iframe isolée
+            const lecteur = new FileReader();
+            lecteur.onload = function (e) {
+                container.innerHTML = `
+                    <p style="margin-top:0; color:#888;">${echapperHtml(fichier.name)}</p>
+                    <iframe style="width:100%; height:400px; border:1px solid #E4E1D8; border-radius:6px;" srcdoc="${e.target.result.replace(/"/g, '&quot;')}"></iframe>
+                `;
+            };
+            lecteur.readAsText(fichier);
+        } else {
+            // Format non prévisualisable (ex. .gan) : on informe juste l'utilisateur
+            container.innerHTML = `
+                <p style="color:#888;">Fichier "${echapperHtml(fichier.name)}" importé.</p>
+                <p style="color:#888; font-size: 13px;">Ce format ne peut pas être prévisualisé directement dans le navigateur.</p>
+            `;
+        }
+    });
+}
+
 // --- Chargement initial ---
-window.onload = function() {
+window.onload = function () {
     afficherTaches();
+    initImportGantt();
 };

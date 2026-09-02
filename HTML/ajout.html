@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
    <head>
      <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Ajouter une tache</title>
      <link rel="stylesheet" href="../CSS/AJ.css">
    </head>
    <body>
-   <form action="db.php" method="POST" id="formTache">
+   <!--
+       BUG CORRIGÉ : action="db.php" pointait vers HTML/db.php (inexistant).
+       Ton JS appelle partout "../PHP/...", donc db.php doit être dans PHP/.
+   -->
+   <form action="../PHP/db.php" method="POST" id="formTache">
      <table border="1">
         <tr>
          <th colspan="6">NOUVELLE TACHE</th>
@@ -24,11 +29,11 @@
                 <input type="text" id="titre" name="titre" placeholder="Nouveau titre">
             </td>
             <td>
-                <textarea size="400" id="des" name="des" rows="2" cols="30" placeholder="Description détaillé de la tache"></textarea>
+                <textarea id="des" name="des" rows="2" cols="30" placeholder="Description détaillé de la tache"></textarea>
             </td>
             <td>
                 <select id="priorite" name="priorite">
-                    <option>Veuillez choisir une Grandeur de priorité pour cette tache</option>
+                    <option value="">Veuillez choisir une Grandeur de priorité pour cette tache</option>
                     <option>Faible importance</option>
                     <option>priorité moyenne</option>
                     <option>Primordiale</option>
@@ -39,7 +44,7 @@
                 <input type="date" id="date" name="date">
             </td>
             <td>
-                <input type="text" id="jour" name="jour" placeholder="Entrer la durée en jour de la tache">
+                <input type="number" min="1" step="1" id="jour" name="jour" placeholder="Durée en jour">
             </td>
             <td>
                 <select id="etat" name="etat">

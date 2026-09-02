@@ -9,13 +9,13 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-if (!isset($_POST['id'])) {
+if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
     http_response_code(400);
-    echo json_encode(["success" => false, "erreur" => "ID manquant"]);
+    echo json_encode(["success" => false, "erreur" => "ID manquant ou invalide"]);
     exit;
 }
 
-$id = $_POST['id'];
+$id = (int)$_POST['id'];
 
 try {
     // Récupérer la tâche actuelle
@@ -30,19 +30,22 @@ try {
         exit;
     }
 
-    // Basculer l'état "terminée"
+    // BUG CORRIGÉ : avant, seule la colonne utilisée (terminee OU etat) était mise à jour,
+    // ce qui pouvait laisser les deux colonnes en désaccord (ex. terminee=1 mais etat="COMMENCE").
+    // On calcule le nouvel état "terminée" une seule fois, puis on synchronise les deux colonnes.
+    $etaitTerminee = isset($tache['terminee'])
+        ? (bool)$tache['terminee']
+        : ($tache['etat'] === 'TERMINER');
+
+    $estTerminee = !$etaitTerminee;
+    $nouvelEtat = $estTerminee ? 'TERMINER' : 'COMMENCE';
+
     if (isset($tache['terminee'])) {
-        // Si la colonne 'terminee' existe, on l'utilise
-        $nouvelEtat = !$tache['terminee'];
-        $sql = "UPDATE taches SET terminee = :terminee WHERE id = :id";
-        $params = [":terminee" => $nouvelEtat, ":id" => $id];
-        $estTerminee = $nouvelEtat;
+        $sql = "UPDATE taches SET terminee = :terminee, etat = :etat WHERE id = :id";
+        $params = [":terminee" => $estTerminee, ":etat" => $nouvelEtat, ":id" => $id];
     } else {
-        // Sinon, on utilise le champ 'etat'
-        $nouvelEtat = ($tache['etat'] === 'TERMINER') ? 'COMMENCE' : 'TERMINER';
         $sql = "UPDATE taches SET etat = :etat WHERE id = :id";
         $params = [":etat" => $nouvelEtat, ":id" => $id];
-        $estTerminee = ($nouvelEtat === 'TERMINER');
     }
 
     $stmt = $pdo->prepare($sql);
@@ -53,4 +56,3 @@ try {
     http_response_code(500);
     echo json_encode(["success" => false, "erreur" => "Erreur lors de la mise à jour : " . $e->getMessage()]);
 }
-?>
